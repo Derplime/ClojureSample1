@@ -37,6 +37,7 @@
            {:headers {"accept" "application/json"}
             :handler #(swap (:total %))}))
 
+; TODO - update to clojure parseInt
 (defn int-value [v]
       (-> v .-target .-value int))
 
@@ -69,21 +70,25 @@
       [:section.section>div.container>div.content
        [:img {:src "/img/warning_clojure.png"}]])
 
-
 (defn home-page []
       (let [params (r/atom {})]
       [:section.section>div.container>div.content
-       [:div "Hello World!"]
-       [:button {:on-click #(getAdd)} "Click Here to Do 1 + 2"]
-       [:div
+       [:h1 "Hello World!"]
+       [:h3 "Button to add 1 + 2. Result in text at the bottom."]
+       [:button {:on-click #(getAdd)} "1 + 2"]
+       [:h3 "Fill out fields and press button to add the values. Result in text at the bottom."]
         [:form
          [:div.form-group
-          [:label "x:"]
-          [:input {:type :text :on-change #(swap! params assoc :x (int-value %))}]]
+          [:label "Value 1: "]
+          [:input {:type :text :placeholder "0" :on-change #(swap! params assoc :x (int-value %))}]]
          [:div.form-group
-          [:label "y:"]
-          [:input {:type :text :on-change #(swap! params assoc :y (int-value %))}]]]
-        [:button.btn.btn-primary {:on-click #(add params)} "Click here to add two fields."]]
+          [:label "Value 2: "]
+          [:input {:type :text :placeholder "0" :on-change #(swap! params assoc :y (int-value %))}]]]
+        [:br]
+        [:button {:on-click #(add params)} "Click here to add the two values."]
+        [:br]
+        [:br]
+        [:p "Your total sum is: " (:total @app-data)]
        ]))
 
 (def pages
