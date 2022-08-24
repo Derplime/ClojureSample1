@@ -42,11 +42,12 @@
       (-> v .-target .-value int))
 
 ; Function to update the color of the p tag class
+; Function to update the color of the p tag class
 (defn change-color []
       (cond
-        (<= 0 (:total @app-data) 19) {:class "has-text-success" :style {:font-weight :bold}}
-        (<= 20 (:total @app-data) 49) {:class "has-text-info" :style {:font-weight :bold}}
-        :default {:class "has-text-warning" :style {:font-weight :bold}}))
+        (<= 0 (:total @app-data) 19) {:style {:color "lightgreen" :font-weight :bold}}
+        (<= 20 (:total @app-data) 49) {:style {:color "lightblue" :font-weight :bold}}
+        :default {:style {:color "lightsalmon" :font-weight :bold}}))
 
 (comment
 
@@ -55,13 +56,6 @@
         {:headers {"accept" "application/transit-json"}
          :params  {:x 1 :y 2}
          :handler #(swap (:total %))})
-
-  ; Function to update the color of the p tag class
-  (defn change-color []
-        (cond
-          (<= 0 (:total @app-data) 19) {:style {:color "light-green" :font-weight :bold}}
-          (<= 20 (:total @app-data) 49) {:style {:color "light-blue" :font-weight :bold}}
-          :default {:style {:color "light-salmon" :font-weight :bold}}))
 
   (<= 0 34 48)
   )
