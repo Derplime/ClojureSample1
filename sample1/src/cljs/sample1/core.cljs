@@ -26,8 +26,8 @@
              :total val)
       (js/console.log "The value from plus API is" (str (:total @app-data)))); Value comes out in console
 
-(defn add [params]
-      (POST "/api/math/plus"
+(defn math [params operation]
+      (POST (str "/api/math/" operation)
             {:headers {"accept" "application/transit-json"}
              :params  @params
              :handler #(swap (:total %))}))
@@ -41,6 +41,13 @@
 (defn int-value [v]
       (-> v .-target .-value int))
 
+; Function to update the color of the p tag class
+(defn change-color []
+      (cond
+        (<= 0 (:total @app-data) 19) {:class "has-text-success" :style {:font-weight :bold}}
+        (<= 20 (:total @app-data) 49) {:class "has-text-info" :style {:font-weight :bold}}
+        :default {:class "has-text-warning" :style {:font-weight :bold}}))
+
 (comment
 
   (:total @app-data)
@@ -48,6 +55,15 @@
         {:headers {"accept" "application/transit-json"}
          :params  {:x 1 :y 2}
          :handler #(swap (:total %))})
+
+  ; Function to update the color of the p tag class
+  (defn change-color []
+        (cond
+          (<= 0 (:total @app-data) 19) {:style {:color "light-green" :font-weight :bold}}
+          (<= 20 (:total @app-data) 49) {:style {:color "light-blue" :font-weight :bold}}
+          :default {:style {:color "light-salmon" :font-weight :bold}}))
+
+  (<= 0 34 48)
   )
 
 (defn navbar []
@@ -75,8 +91,8 @@
       [:section.section>div.container>div.content
        [:h1 "Hello World!"]
        [:h3 "Button to add 1 + 2. Result in text at the bottom."]
-       [:button {:on-click #(getAdd)} "1 + 2"]
-       [:h3 "Fill out fields and press button to add the values. Result in text at the bottom."]
+       [:button.button.is-primary {:on-click #(getAdd)} "1 + 2"]
+       [:h3 "Fill out fields and select the desired operation. Result in text at the bottom."]
         [:form
          [:div.form-group
           [:label "Value 1: "]
@@ -85,10 +101,14 @@
           [:label "Value 2: "]
           [:input {:type :text :placeholder "0" :on-change #(swap! params assoc :y (int-value %))}]]]
         [:br]
-        [:button {:on-click #(add params)} "Click here to add the two values."]
+        [:button.button.is-primary {:on-click #(math params "plus")} "+"]
+        [:button.button.is-info {:on-click #(math params "minus")} "-"]
+        [:button.button.is-warning {:on-click #(math params "multiply")} "*"]
+        [:button.button.is-danger {:on-click #(math params "divide")} "/"]
         [:br]
         [:br]
-        [:p "Your total sum is: " (:total @app-data)]
+        [:p "Your calculated value is: "
+         [:span (change-color) (:total @app-data)]] ; update the class here
        ]))
 
 (def pages
