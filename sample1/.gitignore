@@ -3,7 +3,6 @@
 /classes
 /checkouts
 pom.xml
-package-lock.json
 *.jar
 *.class
 /.lein-*
