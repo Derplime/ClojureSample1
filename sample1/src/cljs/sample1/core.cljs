@@ -19,19 +19,23 @@
         :class (when (= page (:page @session)) "is-active")}
        title])
 
+; Initial Definition of app-data
 (def app-data (r/atom {:x 0 :y 0 :total 0}))
 
+; Function that updates the value of total in app-data
 (defn swap [val]
       (swap! app-data assoc
              :total val)
       (js/console.log "The value from plus API is" (str (:total @app-data)))); Value comes out in console
 
+; Function that calls the math API for a specific operation and x and y values
 (defn math [params operation]
       (POST (str "/api/math/" operation)
             {:headers {"accept" "application/transit-json"}
              :params  @params
              :handler #(swap (:total %))}))
 
+; Function that calls the math API for 1+2
 (defn getAdd []
       (GET "/api/math/plus?x=1&y=2"
            {:headers {"accept" "application/json"}
@@ -41,8 +45,7 @@
 (defn int-value [v]
       (-> v .-target .-value int))
 
-; Function to update the color of the p tag class
-; Function to update the color of the p tag class
+; Function to update the color of the p tag's style property for the total
 (defn change-color []
       (cond
         (<= 0 (:total @app-data) 19) {:style {:color "lightgreen" :font-weight :bold}}
