@@ -48,13 +48,16 @@
 ; Function to update the color of the p tag's style property for the total
 (defn change-color []
       (cond
-        (<= 0 (:total @app-data) 19) {:style {:color "lightgreen" :font-weight :bold}}
-        (<= 20 (:total @app-data) 49) {:style {:color "lightblue" :font-weight :bold}}
+        (<= 0.00000000 (:total @app-data) 19.00000000) {:style {:color "lightgreen" :font-weight :bold}}
+        (<= 19.00000000 (:total @app-data) 20.00000000) {:style {:color "lightgreen" :font-weight :bold}}
+        (<= 20.00000000 (:total @app-data) 49.00000000) {:style {:color "lightblue" :font-weight :bold}}
         :default {:style {:color "lightsalmon" :font-weight :bold}}))
 
 (comment
 
   (:total @app-data)
+  (<= 0.00000000 (:total @app-data) 19.00000000)
+  (<= 20.00000000 (:total @app-data) 49.00000000)
   (POST "/api/math/plus"
         {:headers {"accept" "application/transit-json"}
          :params  {:x 1 :y 2}
