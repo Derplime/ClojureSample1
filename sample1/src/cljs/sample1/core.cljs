@@ -29,10 +29,10 @@
       (js/console.log "The value from plus API is" (str (:total @app-data)))); Value comes out in console
 
 ; Function that calls the math API for a specific operation and x and y values
-(defn math [params operation]
+(defn math [operation]
       (POST (str "/api/math/" operation)
             {:headers {"accept" "application/transit-json"}
-             :params  @params
+             :params  @app-data
              :handler #(swap (:total %))}))
 
 ; Function that calls the math API for 1+2
@@ -84,7 +84,6 @@
        [:img {:src "/img/warning_clojure.png"}]])
 
 (defn home-page []
-      (let [params (r/atom {})]
       [:section.section>div.container>div.content
        [:h1 "Hello World!"]
        [:h3 "Button to add 1 + 2. Result in text at the bottom."]
@@ -93,20 +92,20 @@
         [:form
          [:div.form-group
           [:label "Value 1: "]
-          [:input {:type :text :placeholder "0" :on-change #(swap! params assoc :x (int-value %))}]]
+          [:input {:type :text :placeholder "0" :on-change #(swap! app-data assoc :x (int-value %))}]]
          [:div.form-group
           [:label "Value 2: "]
-          [:input {:type :text :placeholder "0" :on-change #(swap! params assoc :y (int-value %))}]]]
+          [:input {:type :text :placeholder "0" :on-change #(swap! app-data assoc :y (int-value %))}]]]
         [:br]
-        [:button.button.is-primary {:on-click #(math params "plus")} "+"]
-        [:button.button.is-info {:on-click #(math params "minus")} "-"]
-        [:button.button.is-warning {:on-click #(math params "multiply")} "*"]
-        [:button.button.is-danger {:on-click #(math params "divide")} "/"]
+        [:button.button.is-primary {:on-click #(math "plus")} "+"]
+        [:button.button.is-info {:on-click #(math "minus")} "-"]
+        [:button.button.is-warning {:on-click #(math "multiply")} "*"]
+        [:button.button.is-danger {:on-click #(math "divide")} "/"]
         [:br]
         [:br]
         [:p "Your calculated value is: "
          [:span (change-color) (:total @app-data)]] ; update the class here
-       ]))
+       ])
 
 (def pages
   {:home  #'home-page
